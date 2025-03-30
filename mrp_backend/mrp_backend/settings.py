@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     "bills_of_material",
+    "connected_modules",
     "rest_framework",
     "corsheaders",    
     "django_cognito_jwt"
@@ -94,8 +95,15 @@ WSGI_APPLICATION = 'mrp_backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'Kinetiq-DB-Schema',
+        'USER': 'postgres',
+        'PASSWORD': 'password',
+        'HOST': 'localhost',
+        'PORT': '5432',
+        'OPTIONS': {
+            'options': '-c search_path=mrp,sales,admin,production,services'
+        }
     }
 }
 

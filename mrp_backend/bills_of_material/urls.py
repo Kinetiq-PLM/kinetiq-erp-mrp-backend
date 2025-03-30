@@ -2,11 +2,11 @@ from django.urls import path, include
 
 from rest_framework.routers import DefaultRouter
 
-from .views import BOMViewSet
+from .views import BillOfMaterialsViewSet
 
 router = DefaultRouter()
 
-router.register(r'bom', BOMViewSet)
+router.register(r'billofmaterials', BillOfMaterialsViewSet)
 
 urlpatterns = [
     path('bills_of_material/', include(router.urls)),
