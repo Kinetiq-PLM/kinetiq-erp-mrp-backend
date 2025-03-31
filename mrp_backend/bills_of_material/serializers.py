@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import BillOfMaterials
+from .models import BillOfMaterials, NonProjectOrderPricing
 
 class BillOfMaterialsSerializer(serializers.ModelSerializer):
     class Meta:
@@ -18,4 +18,16 @@ class BillOfMaterialsSerializer(serializers.ModelSerializer):
             "cost_of_production",
             "labor_cost",
             "total_cost"
+        ]
+
+class NonProjectOrderPricingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = NonProjectOrderPricing
+        fields = [
+            "non_project_costing_id",
+            "order_id",
+            "product_id",
+            "quantity",
+            "product_price",
+            "final_price"
         ]

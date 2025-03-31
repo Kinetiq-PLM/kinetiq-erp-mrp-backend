@@ -2,6 +2,7 @@ from django.db import models
 import datetime
 from connected_modules.admin.models import Products,RawMaterials
 from connected_modules.production.models import ProductionOrdersDetails
+from connected_modules.sales.models import Orders
 from django.utils.translation import gettext as _
 
 class BillOfMaterials(models.Model):
@@ -84,3 +85,46 @@ class BillOfMaterials(models.Model):
     class Meta:
         managed = False
         db_table = 'bill_of_materials'
+
+class NonProjectOrderPricing(models.Model):
+    non_project_costing_id = models.CharField(
+        db_column='non_project_costing_id',
+        primary_key=True,
+        max_length=255
+    )
+    order_id = models.ForeignKey(
+        Orders,
+        db_column='order_id',
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True
+    )
+    product_id = models.ForeignKey(
+        Products,
+        db_column='product_id',
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True
+    )
+    quantity = models.IntegerField(
+        db_column='quantity',
+        null=True
+    )
+    product_price = models.DecimalField(
+        db_column='product_price',
+        max_digits=10,
+        decimal_places=2,
+        null=True,
+        blank=True
+    )
+    final_price = models.DecimalField(
+        db_column='final_price',
+        max_digits=10,
+        decimal_places=2,
+        null=True,
+        blank=True
+    )
+
+    class Meta:
+        managed = False
+        db_table = 'non_project_order_pricing'
