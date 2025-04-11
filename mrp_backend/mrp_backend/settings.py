@@ -96,13 +96,13 @@ WSGI_APPLICATION = 'mrp_backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Kinetiq-DB-Schema',
+        'NAME': 'Kinetiq-DB-Schema-test-final',
         'USER': 'postgres',
         'PASSWORD': 'password',
         'HOST': 'localhost',
         'PORT': '5432',
         'OPTIONS': {
-            'options': '-c search_path=mrp,sales,admin,production,services'
+            'options': '-c search_path=mrp,sales,admin,production,services,human_resources,project_management'
         }
     }
 }

@@ -1,22 +1,18 @@
 from rest_framework import serializers
-from .models import BillOfMaterials, NonProjectOrderPricing
+from .models import BillOfMaterials, NonProjectOrderPricing, ProductMats, LaborCost
 
 class BillOfMaterialsSerializer(serializers.ModelSerializer):
     class Meta:
         model = BillOfMaterials
         fields = [
             "bom_id",
-            "product_id",
-            "quantity_of_product",
-            "material_id",
-            "quantity_of_material",
-            "product_description",
-            "specific_notes",
-            "production_order_detail_id",
+            "project_id",
+            "product_mats_id",
+            "overall_quantity_of_material",
             "cost_per_raw_material",
             "total_cost_of_raw_materials",
-            "cost_of_production",
-            "labor_cost",
+            "production_order_detail_id",
+            "labor_cost_id",
             "total_cost"
         ]
 
@@ -26,8 +22,25 @@ class NonProjectOrderPricingSerializer(serializers.ModelSerializer):
         fields = [
             "non_project_costing_id",
             "order_id",
-            "product_id",
-            "quantity",
-            "product_price",
             "final_price"
+        ]
+
+class ProductMatsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductMats
+        fields = [
+            "product_mats_id",
+            "product_id",
+            "material_id",
+            "quantity_required",
+            "cost_of_used_materials"
+        ]
+
+class LaborCostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LaborCost
+        fields = [
+            "labor_cost_id",
+            "labor_id",
+            "salary_id"
         ]
