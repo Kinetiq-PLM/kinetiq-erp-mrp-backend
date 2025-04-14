@@ -1,8 +1,8 @@
 from django.db import models
 import datetime
 from connected_modules.admin.models import Products,RawMaterials
-from connected_modules.production.models import ProductionOrdersDetails, Labor
-from connected_modules.sales.models import Orders
+from connected_modules.production.models import ProductionOrdersDetails, Labor, ProductionOrdersHeader
+from connected_modules.sales.models import Orders, ProductPricing
 from connected_modules.project_management.models import ExternalProjectDetails
 from connected_modules.human_resources.models import EmployeeSalary
 from django.utils.translation import gettext as _
@@ -156,3 +156,60 @@ class NonProjectOrderPricing(models.Model):
         db_table = 'non_project_order_pricing'
 
 
+class ProductRawMaterialCost(models.Model):
+    product = models.CharField(
+        db_column='product', 
+        primary_key=True,
+        max_length=255
+    )
+    quantity_of_product = models.IntegerField(
+        db_column='quantity_of_product'
+    )
+    raw_material = models.CharField(
+        db_column='raw_material',
+        max_length=255
+    )
+    quantity_of_raw_material = models.DecimalField(
+        db_column='quantity_of_raw_material',
+        max_digits=10,
+        decimal_places=2
+    )
+    unit_of_measure = models.CharField(
+        db_column='unit_of_measure',
+        default='unit'
+    )
+    cost_per_raw_material = models.DecimalField(
+        db_column='cost_per_raw_material',
+        max_digits=10,
+        decimal_places=2
+    )
+    total_cost_of_raw_materials = models.DecimalField(
+        db_column='total_cost_of_raw_materials',
+        max_digits=10,
+        decimal_places=2
+    )
+    
+    class Meta:
+        managed = False
+        db_table = 'product_raw_material_costs'
+
+
+class BOMList(models.Model):
+    bom_no = models.CharField(
+        db_column='BOM No.',
+        primary_key=True,
+        max_length=255
+    )
+    type = models.TextField(
+        db_column='Type'
+    )
+    status = models.TextField(
+        db_column='Status'
+    )
+    date_created = models.DateTimeField(
+        db_column='Date Created'
+    )
+
+    class Meta:
+        managed = False
+        db_table = 'bom_list'

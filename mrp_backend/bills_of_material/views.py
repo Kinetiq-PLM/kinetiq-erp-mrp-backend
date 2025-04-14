@@ -1,9 +1,8 @@
 from django.shortcuts import render
-
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from .models import BillOfMaterials, NonProjectOrderPricing, ProductMats, LaborCost
-from .serializers import BillOfMaterialsSerializer, NonProjectOrderPricingSerializer, ProductMatsSerializer, LaborCostSerializer
+from .models import BillOfMaterials, NonProjectOrderPricing, ProductMats, LaborCost, ProductRawMaterialCost, BOMList
+from .serializers import BillOfMaterialsSerializer, NonProjectOrderPricingSerializer, ProductMatsSerializer, LaborCostSerializer, ProductRawMaterialCostSerializer, BOMListSerializer
 from django.core.exceptions import ValidationError
 
 class BillOfMaterialsViewSet(viewsets.ModelViewSet):
@@ -21,3 +20,11 @@ class ProductMatsViewSet(viewsets.ModelViewSet):
 class LaborCostViewSet(viewsets.ModelViewSet):
     queryset = LaborCost.objects.all()
     serializer_class = LaborCostSerializer
+
+class ProductRawMaterialCostViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = ProductRawMaterialCost.objects.all()
+    serializer_class = ProductRawMaterialCostSerializer
+
+class BOMListViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = BOMList.objects.all()
+    serializer_class = BOMListSerializer

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import BillOfMaterials, NonProjectOrderPricing, ProductMats, LaborCost
+from .models import BillOfMaterials, NonProjectOrderPricing, ProductMats, LaborCost, ProductRawMaterialCost, BOMList
 
 class BillOfMaterialsSerializer(serializers.ModelSerializer):
     class Meta:
@@ -44,3 +44,13 @@ class LaborCostSerializer(serializers.ModelSerializer):
             "labor_id",
             "salary_id"
         ]
+
+class ProductRawMaterialCostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductRawMaterialCost
+        fields = '__all__'
+
+class BOMListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BOMList
+        fields = '__all__'
