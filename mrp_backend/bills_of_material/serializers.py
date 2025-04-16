@@ -1,5 +1,7 @@
 from rest_framework import serializers
-from .models import BillOfMaterials, NonProjectOrderPricing, ProductMats, LaborCost, ProductRawMaterialCost, BOMList
+from .models import BillOfMaterials, NonProjectOrderPricing, ProductMats, LaborCost, ProductRawMaterialCost, BOMList, OrderList, ProductPricing, CostOfRawMaterials, OrderProductionCosts, EmployeeOrder
+from connected_modules.sales.models import Orders
+from connected_modules.admin.models import Products
 
 class BillOfMaterialsSerializer(serializers.ModelSerializer):
     class Meta:
@@ -53,4 +55,38 @@ class ProductRawMaterialCostSerializer(serializers.ModelSerializer):
 class BOMListSerializer(serializers.ModelSerializer):
     class Meta:
         model = BOMList
+        fields = '__all__'
+
+class OrderListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderList
+        fields = '__all__'
+
+class ProductPricingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductPricing
+        fields = '__all__'
+
+class CostOfRawMaterialsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CostOfRawMaterials
+        fields = '__all__'
+
+class OrderStatementSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Orders
+        fields = [
+            "order_id",
+            "statement_id",
+            "ext_project_request_id"
+        ]
+
+class OrderProductionCostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderProductionCosts
+        fields = '__all__'
+
+class EmployeeOrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EmployeeOrder
         fields = '__all__'

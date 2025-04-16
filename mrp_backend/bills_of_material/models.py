@@ -213,3 +213,147 @@ class BOMList(models.Model):
     class Meta:
         managed = False
         db_table = 'bom_list'
+
+class OrderList(models.Model):
+    order_no = models.CharField(
+        db_column='Order No.',
+        primary_key=True,
+        max_length=255
+    )
+    type = models.TextField(
+        db_column='Type'
+    )
+    details = models.TextField(
+        db_column='Details'
+    )
+    date = models.DateField(
+        db_column='Date'
+    )
+
+    class Meta:
+        managed = False
+        db_table = 'order_list'
+
+class ProductPricing(models.Model):
+    statement_id = models.CharField(
+        db_column='Statement ID',
+        primary_key=True,
+        max_length=255
+    )
+    product_id = models.CharField(
+        db_column='Product ID'
+    )
+    product_name = models.TextField(
+        db_column='Product'
+    )
+    product_description = models.TextField(
+        db_column='Product Description'
+    )
+    quantity = models.IntegerField(
+        db_column='Quantity'
+    )
+    cost = models.DecimalField(
+        db_column='Cost',
+        max_digits=10,
+        decimal_places=2
+    )
+    class Meta:
+        managed = False
+        db_table = 'product_pricing'
+
+
+class CostOfRawMaterials(models.Model):
+    product_id = models.CharField(
+        db_column='Product ID',
+        primary_key=True,
+        max_length=255
+    )
+    raw_material = models.CharField(
+        db_column='Raw Material'
+    )
+    material_id = models.CharField(
+        db_column='Material ID'
+    )
+    rm_quantity = models.DecimalField(
+        db_column='RM Quantity',
+        max_digits=10,
+        decimal_places=2
+    )
+    units = models.CharField(
+        db_column='Units'
+    )
+    unit_cost = models.DecimalField(
+        db_column='Unit Cost',
+        max_digits=10,
+        decimal_places=2
+    )
+    total_cost = models.DecimalField(
+        db_column='Total Cost',
+        max_digits=10,
+        decimal_places=2
+    )
+    class Meta:
+        managed = False
+        db_table = 'cost_of_materials'
+
+class OrderProductionCosts(models.Model):
+    order_id = models.CharField(
+        db_column='order_id',
+        primary_key=True,
+        max_length=255
+    )
+    ext_project_request_id = models.CharField(
+        db_column='ext_project_request_id'
+    )
+    project_id = models.CharField(
+        db_column='project_id'
+    )
+    task_id = models.CharField(
+        db_column='task_id'
+    )
+    production_order_id = models.CharField(
+        db_column='production_order_id'
+    )
+    cost_of_production = models.DecimalField(
+        db_column='cost_of_production',
+        max_digits=10,
+        decimal_places=2
+    )
+
+    class Meta:
+        managed = False
+        db_table = 'order_production_costs'
+
+class EmployeeOrder(models.Model):
+    order_id = models.CharField(
+        db_column='order_id',
+        primary_key=True,
+        max_length=255
+    )
+    ext_project_request_id = models.CharField(
+        db_column='ext_project_request_id'
+    )
+    project_id = models.CharField(
+        db_column='project_id'
+    )
+    task_id = models.CharField(
+        db_column='task_id'
+    )
+    production_order_id = models.CharField(
+        db_column='production_order_id'
+    )
+    employee_id = models.CharField(
+        db_column='employee_id'
+    )
+    days_worked = models.IntegerField(
+        db_column='days_worked'
+    )
+    daily_rate = models.DecimalField(
+        db_column='daily_rate',
+        max_digits=10,
+        decimal_places=2
+    )
+
+    class Meta:
+        managed = False
+        db_table = 'employee_order'
