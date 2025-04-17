@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework import viewsets, status
-from rest_framework.decorators import action
+from rest_framework.decorators import action, api_view
 from rest_framework.response import Response
 from .models import BillOfMaterials, NonProjectOrderPricing, ProductMats, LaborCost, ProductRawMaterialCost, BOMList, OrderList, ProductPricing, CostOfRawMaterials, OrderProductionCosts, EmployeeOrder
 from .serializers import BillOfMaterialsSerializer, NonProjectOrderPricingSerializer, ProductMatsSerializer, LaborCostSerializer, ProductRawMaterialCostSerializer, BOMListSerializer, OrderListSerializer, ProductPricingSerializer, CostOfRawMaterialsSerializer, OrderStatementSerializer, OrderProductionCostSerializer, EmployeeOrderSerializer
@@ -46,7 +46,7 @@ class OrderStatementViewSet(viewsets.ReadOnlyModelViewSet):
         return Response(serializer_class.data)
 
 class ProductPricingViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = ProductPricing.objects.all()  # Add this line to define the queryset
+    queryset = ProductPricing.objects.all()
     serializer_class = ProductPricingSerializer
 
     @action(detail=False, methods=['get'], url_path='by-statement/(?P<statement_id>[^/.]+)')
@@ -84,3 +84,13 @@ class EmployeeOrderViewSet(viewsets.ReadOnlyModelViewSet):
         ordersemployee = EmployeeOrder.objects.filter(order_id = order_id)
         serializer_class = EmployeeOrderSerializer(ordersemployee,many=True)
         return Response(serializer_class.data)
+    
+
+@api_view(['POST'])
+def insert_bom(request):
+    if request.method == 'POST':
+        serializer = BillOfMaterialsSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "Data saved successfully", "data": serializer.data}, status=201)
+        return Response(serializer.errors, status=400)
