@@ -7,7 +7,6 @@ class BillOfMaterialsSerializer(serializers.ModelSerializer):
     class Meta:
         model = BillOfMaterials
         fields = [
-            "bom_id",
             "project_id",
             "product_mats_id",
             "overall_quantity_of_material",

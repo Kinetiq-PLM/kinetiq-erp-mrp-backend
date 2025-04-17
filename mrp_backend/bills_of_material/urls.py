@@ -2,7 +2,7 @@ from django.urls import path, include
 
 from rest_framework.routers import DefaultRouter
 
-from .views import BillOfMaterialsViewSet, NonProjectOrderPricingViewSet, ProductMatsViewSet, LaborCostViewSet, ProductRawMaterialCostViewSet, BOMListViewSet, OrderListViewSet, ProductPricingViewSet, CostOfRawMaterialsViewSet, OrderStatementViewSet, OrderProductionCostsViewSet, EmployeeOrderViewSet
+from .views import BillOfMaterialsViewSet, NonProjectOrderPricingViewSet, ProductMatsViewSet, LaborCostViewSet, ProductRawMaterialCostViewSet, BOMListViewSet, OrderListViewSet, ProductPricingViewSet, CostOfRawMaterialsViewSet, OrderStatementViewSet, OrderProductionCostsViewSet, EmployeeOrderViewSet, insert_bom
 
 router = DefaultRouter()
 
@@ -21,4 +21,5 @@ router.register(r'employeeorder', EmployeeOrderViewSet, basename='employee-order
 
 urlpatterns = [
     path('bills_of_material/', include(router.urls)),
+    path('insertbom/', insert_bom, name="insert-bom")
 ]
