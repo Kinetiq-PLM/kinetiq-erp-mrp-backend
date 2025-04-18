@@ -357,3 +357,30 @@ class EmployeeOrder(models.Model):
     class Meta:
         managed = False
         db_table = 'employee_order'
+
+class NonProjectProductCost(models.Model):
+    statement_id = models.CharField(
+        db_column='statement_id',
+        primary_key=True,
+        max_length=255
+    )
+    product_id = models.CharField(
+        db_column='product_id'
+    )
+    product_name = models.TextField(
+        db_column='product_name'
+    )
+    description = models.TextField(
+        db_column='description'
+    )
+    quantity = models.IntegerField(
+        db_column='quantity'
+    )
+    product_cost = models.DecimalField(
+        db_column='Product Cost',
+        max_digits=10,
+        decimal_places=2
+    )
+    class Meta:
+        managed = False
+        db_table = 'np_product_cost'

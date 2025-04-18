@@ -2,8 +2,8 @@ from django.shortcuts import render
 from rest_framework import viewsets, status
 from rest_framework.decorators import action, api_view
 from rest_framework.response import Response
-from .models import BillOfMaterials, NonProjectOrderPricing, ProductMats, LaborCost, ProductRawMaterialCost, BOMList, OrderList, ProductPricing, CostOfRawMaterials, OrderProductionCosts, EmployeeOrder
-from .serializers import BillOfMaterialsSerializer, NonProjectOrderPricingSerializer, ProductMatsSerializer, LaborCostSerializer, ProductRawMaterialCostSerializer, BOMListSerializer, OrderListSerializer, ProductPricingSerializer, CostOfRawMaterialsSerializer, OrderStatementSerializer, OrderProductionCostSerializer, EmployeeOrderSerializer
+from .models import BillOfMaterials, NonProjectOrderPricing, ProductMats, LaborCost, ProductRawMaterialCost, BOMList, OrderList, ProductPricing, CostOfRawMaterials, OrderProductionCosts, EmployeeOrder, NonProjectProductCost
+from .serializers import BillOfMaterialsSerializer, NonProjectOrderPricingSerializer, ProductMatsSerializer, LaborCostSerializer, ProductRawMaterialCostSerializer, BOMListSerializer, OrderListSerializer, ProductPricingSerializer, CostOfRawMaterialsSerializer, OrderStatementSerializer, OrderProductionCostSerializer, EmployeeOrderSerializer, NonProjectProductCostSerializer
 from django.core.exceptions import ValidationError
 from connected_modules.sales.models import Orders, StatementItem
 
@@ -85,6 +85,15 @@ class EmployeeOrderViewSet(viewsets.ReadOnlyModelViewSet):
         serializer_class = EmployeeOrderSerializer(ordersemployee,many=True)
         return Response(serializer_class.data)
     
+class NonProjectProductCostViewset(viewsets.ReadOnlyModelViewSet):
+    queryset = NonProjectProductCost.objects.all()
+    serializer_class = NonProjectProductCostSerializer
+    
+    @action(detail=False, methods=['get'], url_path='statement/(?P<statement_id>[^/.]+)')
+    def get_npproducts(self, request, statement_id=None):
+        npproducts = NonProjectProductCost.objects.filter(statement_id = statement_id)
+        serializer_class = NonProjectProductCostSerializer(npproducts,many=True)
+        return Response(serializer_class.data)
 
 @api_view(['POST'])
 def insert_bom(request):

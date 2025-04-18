@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import BillOfMaterials, NonProjectOrderPricing, ProductMats, LaborCost, ProductRawMaterialCost, BOMList, OrderList, ProductPricing, CostOfRawMaterials, OrderProductionCosts, EmployeeOrder
+from .models import BillOfMaterials, NonProjectOrderPricing, ProductMats, LaborCost, ProductRawMaterialCost, BOMList, OrderList, ProductPricing, CostOfRawMaterials, OrderProductionCosts, EmployeeOrder, NonProjectProductCost
 from connected_modules.sales.models import Orders
 from connected_modules.admin.models import Products
 
@@ -88,4 +88,9 @@ class OrderProductionCostSerializer(serializers.ModelSerializer):
 class EmployeeOrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = EmployeeOrder
+        fields = '__all__'
+
+class NonProjectProductCostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = NonProjectProductCost
         fields = '__all__'
