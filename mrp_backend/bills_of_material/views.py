@@ -2,8 +2,8 @@ from django.shortcuts import render
 from rest_framework import viewsets, status
 from rest_framework.decorators import action, api_view
 from rest_framework.response import Response
-from .models import BillOfMaterials, NonProjectOrderPricing, ProductMats, LaborCost, ProductRawMaterialCost, BOMList, OrderList, ProductPricing, CostOfRawMaterials, OrderProductionCosts, EmployeeOrder, NonProjectProductCost, ProjectBOMDetail
-from .serializers import BillOfMaterialsSerializer, NonProjectOrderPricingSerializer, ProductMatsSerializer, LaborCostSerializer, ProductRawMaterialCostSerializer, BOMListSerializer, OrderListSerializer, ProductPricingSerializer, CostOfRawMaterialsSerializer, OrderStatementSerializer, OrderProductionCostSerializer, EmployeeOrderSerializer, NonProjectProductCostSerializer, ProjectBOMDetailSerializer
+from .models import BillOfMaterials, NonProjectOrderPricing, ProductMats, LaborCost, ProductRawMaterialCost, BOMList, OrderList, ProductPricing, CostOfRawMaterials, OrderProductionCosts, EmployeeOrder, NonProjectProductCost, ProjectBOMDetail, PrincipalItemOrderList
+from .serializers import BillOfMaterialsSerializer, NonProjectOrderPricingSerializer, ProductMatsSerializer, LaborCostSerializer, ProductRawMaterialCostSerializer, BOMListSerializer, OrderListSerializer, ProductPricingSerializer, CostOfRawMaterialsSerializer, OrderStatementSerializer, OrderProductionCostSerializer, EmployeeOrderSerializer, NonProjectProductCostSerializer, ProjectBOMDetailSerializer, PrincipalItemOrderListSerializer
 from django.core.exceptions import ValidationError
 from connected_modules.sales.models import Orders, StatementItem
 
@@ -104,6 +104,10 @@ class ProjectBOMDetailViewset(viewsets.ReadOnlyModelViewSet):
         products_rm = ProjectBOMDetail.objects.filter(statement_id = statement_id)
         serializer_class = ProjectBOMDetailSerializer(products_rm,many=True)
         return Response(serializer_class.data)
+    
+class PrincipalItemOrderListViewset(viewsets.ReadOnlyModelViewSet):
+    queryset = PrincipalItemOrderList.objects.all()
+    serializer_class = PrincipalItemOrderListSerializer
 
 @api_view(['POST'])
 def insert_bom(request):

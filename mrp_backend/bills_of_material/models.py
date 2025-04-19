@@ -422,3 +422,22 @@ class ProjectBOMDetail(models.Model):
     class Meta:
         managed = False
         db_table = 'project_bom_detail'
+
+class PrincipalItemOrderList(models.Model):
+    service_order_item_id = models.CharField(
+        db_column='service_order_item_id',
+        primary_key=True,
+        max_length=255
+    )
+    type = models.TextField(
+        db_column='type'
+    )
+    description = models.TextField(
+        db_column='description_details'
+    )
+    date = models.DateTimeField(
+        db_column='date'
+    )
+    class Meta:
+        managed = False
+        db_table = 'principal_item_orders'
