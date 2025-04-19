@@ -384,3 +384,41 @@ class NonProjectProductCost(models.Model):
     class Meta:
         managed = False
         db_table = 'np_product_cost'
+
+
+class ProjectBOMDetail(models.Model):
+    statement_id = models.CharField(
+        db_column='statement_id',
+        primary_key=True,
+        max_length=255
+    )
+    product_name = models.TextField(
+        db_column='Product'
+    )
+    qty_of_product = models.IntegerField(
+        db_column='Qty. Of Product'
+    )
+    raw_material_name = models.TextField(
+        db_column='Raw Material'
+    )
+    qty_of_raw_material = models.DecimalField(
+        db_column='Qty. Of Raw Material',
+        max_digits=10,
+        decimal_places=2
+    )
+    units = models.CharField(
+        db_column='Units'
+    )
+    cost_per_rm = models.DecimalField(
+        db_column='Cost Per Raw Material',
+        max_digits=10,
+        decimal_places=2
+    )
+    total_cost_per_rm = models.DecimalField(
+        db_column='Total Cost Per Raw Material',
+        max_digits=10,
+        decimal_places=2
+    )
+    class Meta:
+        managed = False
+        db_table = 'project_bom_detail'

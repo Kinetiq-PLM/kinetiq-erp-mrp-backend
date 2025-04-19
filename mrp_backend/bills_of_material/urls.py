@@ -2,7 +2,7 @@ from django.urls import path, include
 
 from rest_framework.routers import DefaultRouter
 
-from .views import BillOfMaterialsViewSet, NonProjectOrderPricingViewSet, ProductMatsViewSet, LaborCostViewSet, ProductRawMaterialCostViewSet, BOMListViewSet, OrderListViewSet, ProductPricingViewSet, CostOfRawMaterialsViewSet, OrderStatementViewSet, OrderProductionCostsViewSet, EmployeeOrderViewSet, insert_bom, NonProjectProductCostViewset
+from .views import BillOfMaterialsViewSet, NonProjectOrderPricingViewSet, ProductMatsViewSet, LaborCostViewSet, ProductRawMaterialCostViewSet, BOMListViewSet, OrderListViewSet, ProductPricingViewSet, CostOfRawMaterialsViewSet, OrderStatementViewSet, OrderProductionCostsViewSet, EmployeeOrderViewSet, insert_bom, NonProjectProductCostViewset, ProjectBOMDetailViewset
 
 router = DefaultRouter()
 
@@ -19,6 +19,7 @@ router.register(r'costofrawmats', CostOfRawMaterialsViewSet, basename='cost-raw'
 router.register(r'orderproductioncost', OrderProductionCostsViewSet, basename='order-production')
 router.register(r'employeeorder', EmployeeOrderViewSet, basename='employee-order')
 router.register(r'npproductcost', NonProjectProductCostViewset, basename='np-productcost')
+router.register(r'projectbomdetail', ProjectBOMDetailViewset, basename='project-bom')
 
 urlpatterns = [
     path('bills_of_material/', include(router.urls)),
