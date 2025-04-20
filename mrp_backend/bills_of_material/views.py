@@ -2,8 +2,8 @@ from django.shortcuts import render
 from rest_framework import viewsets, status
 from rest_framework.decorators import action, api_view
 from rest_framework.response import Response
-from .models import BillOfMaterials, NonProjectOrderPricing, ProductMats, LaborCost, PrincipalItems, ProductRawMaterialCost, BOMList, OrderList, ProductPricing, CostOfRawMaterials, OrderProductionCosts, EmployeeOrder, NonProjectProductCost, ProjectBOMDetail, PrincipalItemOrderList, PrincipalOrderItem
-from .serializers import BillOfMaterialsSerializer, NonProjectOrderPricingSerializer, ProductMatsSerializer, LaborCostSerializer, PrincipalItemsSerializer, ProductRawMaterialCostSerializer, BOMListSerializer, OrderListSerializer, ProductPricingSerializer, CostOfRawMaterialsSerializer, OrderStatementSerializer, OrderProductionCostSerializer, EmployeeOrderSerializer, NonProjectProductCostSerializer, ProjectBOMDetailSerializer, PrincipalItemOrderListSerializer, PrincipalOrderItemSerializer
+from .models import BillOfMaterials, NonProjectOrderPricing, ProductMats, LaborCost, PrincipalItems, ProductRawMaterialCost, BOMList, OrderList, ProductPricing, CostOfRawMaterials, OrderProductionCosts, EmployeeOrder, NonProjectProductCost, ProjectBOMDetail, PrincipalItemOrderList, PrincipalOrderItem, TrackingNpop, TrackingPrincipal
+from .serializers import BillOfMaterialsSerializer, NonProjectOrderPricingSerializer, ProductMatsSerializer, LaborCostSerializer, PrincipalItemsSerializer, ProductRawMaterialCostSerializer, BOMListSerializer, OrderListSerializer, ProductPricingSerializer, CostOfRawMaterialsSerializer, OrderStatementSerializer, OrderProductionCostSerializer, EmployeeOrderSerializer, NonProjectProductCostSerializer, ProjectBOMDetailSerializer, PrincipalItemOrderListSerializer, PrincipalOrderItemSerializer, TrackingNpopSerializer, TrackingPrincipalSerializer
 from django.core.exceptions import ValidationError
 from connected_modules.sales.models import Orders, StatementItem
 
@@ -122,6 +122,14 @@ class PrincipalOrderItemViewSet(viewsets.ReadOnlyModelViewSet):
         principal_product = PrincipalOrderItem.objects.filter(service_order_item_id = service_order_item_id)
         serializer_class = PrincipalOrderItemSerializer(principal_product,many=True)
         return Response(serializer_class.data)
+    
+class TrackingNpopViewSet(viewsets.ModelViewSet):
+    queryset = TrackingNpop.objects.all()
+    serializer_class = TrackingNpopSerializer
+
+class TrackingPrincipalViewSet(viewsets.ModelViewSet):
+    queryset = TrackingPrincipal.objects.all()
+    serializer_class = TrackingPrincipalSerializer
 
 @api_view(['POST'])
 def insert_bom(request):

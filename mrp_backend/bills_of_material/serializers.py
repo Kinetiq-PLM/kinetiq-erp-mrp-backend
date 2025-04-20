@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import BillOfMaterials, NonProjectOrderPricing, ProductMats, LaborCost, PrincipalItems, ProductRawMaterialCost, BOMList, OrderList, ProductPricing, CostOfRawMaterials, OrderProductionCosts, EmployeeOrder, NonProjectProductCost, ProjectBOMDetail, PrincipalItemOrderList, PrincipalOrderItem
+from .models import BillOfMaterials, NonProjectOrderPricing, ProductMats, LaborCost, PrincipalItems, ProductRawMaterialCost, BOMList, OrderList, ProductPricing, CostOfRawMaterials, OrderProductionCosts, EmployeeOrder, NonProjectProductCost, ProjectBOMDetail, PrincipalItemOrderList, PrincipalOrderItem, TrackingNpop, TrackingPrincipal
 from connected_modules.sales.models import Orders
 from connected_modules.admin.models import Products
 
@@ -117,4 +117,14 @@ class PrincipalItemOrderListSerializer(serializers.ModelSerializer):
 class PrincipalOrderItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = PrincipalOrderItem
+        fields = '__all__'
+
+class TrackingNpopSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TrackingNpop
+        fields = '__all__'
+
+class TrackingPrincipalSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TrackingPrincipal
         fields = '__all__'

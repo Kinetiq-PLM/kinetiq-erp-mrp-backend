@@ -506,3 +506,44 @@ class PrincipalOrderItem(models.Model):
     class Meta:
         managed = False
         db_table = 'principal_item_details'
+
+class TrackingNpop(models.Model):
+    tracking_npop_id = models.CharField(
+        db_column='tracking_npop_id',
+        primary_key=True,
+        max_length=255
+    )
+    order_id = models.ForeignKey(
+        Orders,
+        db_column='order_id',
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True
+    )
+    status = models.CharField(
+        db_column='status'
+    )
+    class Meta:
+        managed = False
+        db_table = 'tracking_npop'
+
+
+class TrackingPrincipal(models.Model):
+    tracking_principal_id = models.CharField(
+        db_column='tracking_principal_id',
+        primary_key=True,
+        max_length=255
+    )
+    service_order_item_id = models.ForeignKey(
+        ServiceOrderItem,
+        db_column='service_order_item_id',
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True
+    )
+    status = models.CharField(
+        db_column='status'
+    )
+    class Meta:
+        managed = False
+        db_table = 'tracking_principal'
