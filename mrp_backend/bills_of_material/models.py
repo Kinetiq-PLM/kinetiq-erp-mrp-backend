@@ -1,10 +1,11 @@
 from django.db import models
 import datetime
-from connected_modules.admin.models import Products,RawMaterials
+from connected_modules.admin.models import Products,RawMaterials,ItemMasterData
 from connected_modules.production.models import ProductionOrdersDetails, Labor, ProductionOrdersHeader
 from connected_modules.sales.models import Orders, ProductPricing
 from connected_modules.project_management.models import ExternalProjectDetails
 from connected_modules.human_resources.models import EmployeeSalary
+from connected_modules.services.models import ServiceOrderItem
 from django.utils.translation import gettext as _
 
 class ProductMats(models.Model):
@@ -155,6 +156,35 @@ class NonProjectOrderPricing(models.Model):
         managed = False
         db_table = 'non_project_order_pricing'
 
+
+class PrincipalItems(models.Model):
+    principal_item_id = models.CharField(
+        db_column='principal_item_id',
+        primary_key=True,
+        max_length=255
+    )
+    service_order_item_id = models.ForeignKey(
+        ServiceOrderItem,
+        db_column='service_order_item_id',
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True
+    )
+    item_id = models.ForeignKey(
+        ItemMasterData,
+        db_column='item_id',
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True
+    )
+    mark_up_price = models.DecimalField(
+        db_column='mark_up_price',
+        max_digits=10,
+        decimal_places=2
+    )
+    class Meta:
+        managed = False
+        db_table = 'principal_items'
 
 class ProductRawMaterialCost(models.Model):
     product = models.CharField(
@@ -441,3 +471,33 @@ class PrincipalItemOrderList(models.Model):
     class Meta:
         managed = False
         db_table = 'principal_item_orders'
+
+class PrincipalOrderItem(models.Model):
+    service_order_item_id = models.CharField(
+        db_column='service_order_item_id',
+        primary_key=True,
+        max_length=255
+    )
+    item_id = models.CharField(
+        db_column='item_id'
+    )
+    material_id = models.CharField(
+        db_column='material_id'
+    )
+    item_name = models.TextField(
+        db_column='item_name'
+    )
+    item_quantity = models.IntegerField(
+        db_column='item_quantity'
+    )
+    unit_of_measure = models.CharField(
+        db_column='unit_of_measure'
+    )
+    item_price = models.DecimalField(
+        db_column='item_price',
+        max_digits=10,
+        decimal_places=2
+    )
+    class Meta:
+        managed = False
+        db_table = 'principal_item_details'

@@ -2,8 +2,8 @@ from django.shortcuts import render
 from rest_framework import viewsets, status
 from rest_framework.decorators import action, api_view
 from rest_framework.response import Response
-from .models import BillOfMaterials, NonProjectOrderPricing, ProductMats, LaborCost, ProductRawMaterialCost, BOMList, OrderList, ProductPricing, CostOfRawMaterials, OrderProductionCosts, EmployeeOrder, NonProjectProductCost, ProjectBOMDetail, PrincipalItemOrderList
-from .serializers import BillOfMaterialsSerializer, NonProjectOrderPricingSerializer, ProductMatsSerializer, LaborCostSerializer, ProductRawMaterialCostSerializer, BOMListSerializer, OrderListSerializer, ProductPricingSerializer, CostOfRawMaterialsSerializer, OrderStatementSerializer, OrderProductionCostSerializer, EmployeeOrderSerializer, NonProjectProductCostSerializer, ProjectBOMDetailSerializer, PrincipalItemOrderListSerializer
+from .models import BillOfMaterials, NonProjectOrderPricing, ProductMats, LaborCost, PrincipalItems, ProductRawMaterialCost, BOMList, OrderList, ProductPricing, CostOfRawMaterials, OrderProductionCosts, EmployeeOrder, NonProjectProductCost, ProjectBOMDetail, PrincipalItemOrderList, PrincipalOrderItem
+from .serializers import BillOfMaterialsSerializer, NonProjectOrderPricingSerializer, ProductMatsSerializer, LaborCostSerializer, PrincipalItemsSerializer, ProductRawMaterialCostSerializer, BOMListSerializer, OrderListSerializer, ProductPricingSerializer, CostOfRawMaterialsSerializer, OrderStatementSerializer, OrderProductionCostSerializer, EmployeeOrderSerializer, NonProjectProductCostSerializer, ProjectBOMDetailSerializer, PrincipalItemOrderListSerializer, PrincipalOrderItemSerializer
 from django.core.exceptions import ValidationError
 from connected_modules.sales.models import Orders, StatementItem
 
@@ -22,6 +22,10 @@ class ProductMatsViewSet(viewsets.ModelViewSet):
 class LaborCostViewSet(viewsets.ModelViewSet):
     queryset = LaborCost.objects.all()
     serializer_class = LaborCostSerializer
+
+class PrincipalItemsViewset(viewsets.ModelViewSet):
+    queryset = PrincipalItems.objects.all()
+    serializer_class = PrincipalItemsSerializer
 
 class ProductRawMaterialCostViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = ProductRawMaterialCost.objects.all()
@@ -109,11 +113,41 @@ class PrincipalItemOrderListViewset(viewsets.ReadOnlyModelViewSet):
     queryset = PrincipalItemOrderList.objects.all()
     serializer_class = PrincipalItemOrderListSerializer
 
+class PrincipalOrderItemViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = PrincipalOrderItem.objects.all()
+    serializer_class = PrincipalOrderItemSerializer
+
+    @action(detail=False, methods=['get'], url_path='by-serviceid/(?P<service_order_item_id>[^/.]+)')
+    def get_products(self, request, service_order_item_id=None):
+        principal_product = PrincipalOrderItem.objects.filter(service_order_item_id = service_order_item_id)
+        serializer_class = PrincipalOrderItemSerializer(principal_product,many=True)
+        return Response(serializer_class.data)
+
 @api_view(['POST'])
 def insert_bom(request):
-    if request.method == 'POST':
-        serializer = BillOfMaterialsSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({"message": "Data saved successfully", "data": serializer.data}, status=201)
-        return Response(serializer.errors, status=400)
+    try:
+        for entry in request.data:
+            if request.method == 'POST':
+                serializer = BillOfMaterialsSerializer(data=entry)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data, status=status.HTTP_201_CREATED)
+                else:
+                    print(serializer.errors)
+                    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['POST'])
+def insert_nonproject(request):
+    try:
+        if request.method == 'POST':
+            serializer = NonProjectOrderPricingSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            else:
+                print(serializer.errors)
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import BillOfMaterials, NonProjectOrderPricing, ProductMats, LaborCost, ProductRawMaterialCost, BOMList, OrderList, ProductPricing, CostOfRawMaterials, OrderProductionCosts, EmployeeOrder, NonProjectProductCost, ProjectBOMDetail, PrincipalItemOrderList
+from .models import BillOfMaterials, NonProjectOrderPricing, ProductMats, LaborCost, PrincipalItems, ProductRawMaterialCost, BOMList, OrderList, ProductPricing, CostOfRawMaterials, OrderProductionCosts, EmployeeOrder, NonProjectProductCost, ProjectBOMDetail, PrincipalItemOrderList, PrincipalOrderItem
 from connected_modules.sales.models import Orders
 from connected_modules.admin.models import Products
 
@@ -21,7 +21,6 @@ class NonProjectOrderPricingSerializer(serializers.ModelSerializer):
     class Meta:
         model = NonProjectOrderPricing
         fields = [
-            "non_project_costing_id",
             "order_id",
             "final_price"
         ]
@@ -44,6 +43,15 @@ class LaborCostSerializer(serializers.ModelSerializer):
             "labor_cost_id",
             "labor_id",
             "salary_id"
+        ]
+
+class PrincipalItemsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PrincipalItems
+        fields = [
+            "service_order_item_id",
+            "item_id",
+            "mark_up_price"
         ]
 
 class ProductRawMaterialCostSerializer(serializers.ModelSerializer):
@@ -103,4 +111,10 @@ class ProjectBOMDetailSerializer(serializers.ModelSerializer):
 class PrincipalItemOrderListSerializer(serializers.ModelSerializer):
     class Meta:
         model = PrincipalItemOrderList
+        fields = '__all__'
+
+
+class PrincipalOrderItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PrincipalOrderItem
         fields = '__all__'
