@@ -6,6 +6,8 @@ from .models import BillOfMaterials, NonProjectOrderPricing, ProductMats, LaborC
 from .serializers import BillOfMaterialsSerializer, NonProjectOrderPricingSerializer, ProductMatsSerializer, LaborCostSerializer, PrincipalItemsSerializer, ProductRawMaterialCostSerializer, BOMListSerializer, OrderListSerializer, ProductPricingSerializer, CostOfRawMaterialsSerializer, OrderStatementSerializer, OrderProductionCostSerializer, EmployeeOrderSerializer, NonProjectProductCostSerializer, ProjectBOMDetailSerializer, PrincipalItemOrderListSerializer, PrincipalOrderItemSerializer, TrackingNpopSerializer, TrackingPrincipalSerializer, ProjectProductMatsSerializer
 from django.core.exceptions import ValidationError
 from connected_modules.sales.models import Orders, StatementItem
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 class BillOfMaterialsViewSet(viewsets.ModelViewSet):
     queryset = BillOfMaterials.objects.all()
@@ -185,3 +187,26 @@ def insert_principal(request):
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+@csrf_exempt
+def update_tracking_status(request):
+    if request.method == 'POST':
+        try:
+            import json
+            data = json.loads(request.body)
+            order_id = data.get('order_id')
+
+            if not order_id:
+                return JsonResponse({'error': 'Order ID is required'}, status=400)
+
+            tracking_record = TrackingNpop.objects.filter(order_id=order_id).first()
+            if tracking_record:
+                tracking_record.status = 'Complete'
+                tracking_record.save()
+                return JsonResponse({'message': 'Status updated successfully'}, status=200)
+            else:
+                return JsonResponse({'error': 'Tracking record not found'}, status=404)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+    return JsonResponse({'error': 'Invalid request method'}, status=405)
