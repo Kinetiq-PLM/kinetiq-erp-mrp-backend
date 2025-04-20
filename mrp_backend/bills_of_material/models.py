@@ -453,6 +453,74 @@ class ProjectBOMDetail(models.Model):
         managed = False
         db_table = 'project_bom_detail'
 
+class NonProjectBOMDetail(models.Model):
+    statement_id = models.CharField(
+        db_column='statement_id',
+        primary_key=True,
+        max_length=255
+    )
+    product_id = models.CharField(
+        db_column='product_id'
+    )
+    product_name = models.TextField(
+        db_column='product_name'
+    )
+    quantity = models.IntegerField(
+        db_column='quantity'
+    )
+    unit_of_measure = models.CharField(
+        db_column='unit_of_measure'
+    )
+    selling_price = models.DecimalField(
+        db_column='selling_price',
+        max_digits=10,
+        decimal_places=2
+    )
+    product_cost = models.DecimalField(
+        db_column='Product Cost',
+        max_digits=10,
+        decimal_places=2
+    )
+    class Meta:
+        managed = False
+        db_table = 'np_bom_detail'
+
+
+class PrincipalBOMDetail(models.Model):
+    service_order_item_id = models.CharField(
+        db_column='service_order_item_id',
+        primary_key=True,
+        max_length=255
+    )
+    item_id = models.CharField(
+        db_column='item_id'
+    )
+    material_id = models.CharField(
+        db_column='material_id'
+    )
+    item_name = models.TextField(
+        db_column='item_name'
+    )
+    item_quantity = models.IntegerField(
+        db_column='item_quantity'
+    )
+    unit_of_measure = models.CharField(
+        db_column='unit_of_measure'
+    )
+    item_price = models.DecimalField(
+        db_column='item_price',
+        max_digits=10,
+        decimal_places=2
+    )
+    total_item_price = models.DecimalField(
+        db_column='total_item_price',
+        max_digits=10,
+        decimal_places=2
+    )
+    class Meta:
+        managed = False
+        db_table = 'principal_bom_detail'
+
 class PrincipalItemOrderList(models.Model):
     service_order_item_id = models.CharField(
         db_column='service_order_item_id',

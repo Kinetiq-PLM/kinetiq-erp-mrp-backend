@@ -2,7 +2,7 @@ from django.urls import path, include
 
 from rest_framework.routers import DefaultRouter
 
-from .views import BillOfMaterialsViewSet, NonProjectOrderPricingViewSet, ProductMatsViewSet, LaborCostViewSet, PrincipalItemsViewset, ProductRawMaterialCostViewSet, BOMListViewSet, OrderListViewSet, ProductPricingViewSet, CostOfRawMaterialsViewSet, OrderStatementViewSet, OrderProductionCostsViewSet, EmployeeOrderViewSet, insert_bom, NonProjectProductCostViewset, ProjectBOMDetailViewset, PrincipalItemOrderListViewset, insert_nonproject, PrincipalOrderItemViewSet, insert_principal, TrackingNpopViewSet, TrackingPrincipalViewSet, ProjectProductMatsViewSet, update_tracking_status, update_tracking_status_principal
+from .views import BillOfMaterialsViewSet, NonProjectOrderPricingViewSet, ProductMatsViewSet, LaborCostViewSet, PrincipalItemsViewset, ProductRawMaterialCostViewSet, BOMListViewSet, OrderListViewSet, ProductPricingViewSet, CostOfRawMaterialsViewSet, OrderStatementViewSet, OrderProductionCostsViewSet, EmployeeOrderViewSet, insert_bom, NonProjectProductCostViewset, ProjectBOMDetailViewset, NonProjectBOMDetailViewset, PrincipalBOMDetailViewset, PrincipalItemOrderListViewset, insert_nonproject, PrincipalOrderItemViewSet, insert_principal, TrackingNpopViewSet, TrackingPrincipalViewSet, ProjectProductMatsViewSet, update_tracking_status, update_tracking_status_principal
 
 router = DefaultRouter()
 
@@ -21,6 +21,8 @@ router.register(r'orderproductioncost', OrderProductionCostsViewSet, basename='o
 router.register(r'employeeorder', EmployeeOrderViewSet, basename='employee-order')
 router.register(r'npproductcost', NonProjectProductCostViewset, basename='np-productcost')
 router.register(r'projectbomdetail', ProjectBOMDetailViewset, basename='project-bom')
+router.register(r'nonprojectbomdetail', NonProjectBOMDetailViewset, basename='nonproject-bom')
+router.register(r'principalbomdetail', PrincipalBOMDetailViewset, basename='principal-bom')
 router.register(r'principalorders', PrincipalItemOrderListViewset, basename='principal-orders')
 router.register(r'principalitemorder', PrincipalOrderItemViewSet, basename='principal-items')
 router.register(r'trackingnpop', TrackingNpopViewSet)

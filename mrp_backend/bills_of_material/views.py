@@ -2,8 +2,8 @@ from django.shortcuts import render
 from rest_framework import viewsets, status
 from rest_framework.decorators import action, api_view
 from rest_framework.response import Response
-from .models import BillOfMaterials, NonProjectOrderPricing, ProductMats, LaborCost, PrincipalItems, ProductRawMaterialCost, BOMList, OrderList, ProductPricing, CostOfRawMaterials, OrderProductionCosts, EmployeeOrder, NonProjectProductCost, ProjectBOMDetail, PrincipalItemOrderList, PrincipalOrderItem, TrackingNpop, TrackingPrincipal, ProjectProductMats
-from .serializers import BillOfMaterialsSerializer, NonProjectOrderPricingSerializer, ProductMatsSerializer, LaborCostSerializer, PrincipalItemsSerializer, ProductRawMaterialCostSerializer, BOMListSerializer, OrderListSerializer, ProductPricingSerializer, CostOfRawMaterialsSerializer, OrderStatementSerializer, OrderProductionCostSerializer, EmployeeOrderSerializer, NonProjectProductCostSerializer, ProjectBOMDetailSerializer, PrincipalItemOrderListSerializer, PrincipalOrderItemSerializer, TrackingNpopSerializer, TrackingPrincipalSerializer, ProjectProductMatsSerializer
+from .models import BillOfMaterials, NonProjectOrderPricing, ProductMats, LaborCost, PrincipalItems, ProductRawMaterialCost, BOMList, OrderList, ProductPricing, CostOfRawMaterials, OrderProductionCosts, EmployeeOrder, NonProjectProductCost, ProjectBOMDetail, NonProjectBOMDetail, PrincipalBOMDetail, PrincipalItemOrderList, PrincipalOrderItem, TrackingNpop, TrackingPrincipal, ProjectProductMats
+from .serializers import BillOfMaterialsSerializer, NonProjectOrderPricingSerializer, ProductMatsSerializer, LaborCostSerializer, PrincipalItemsSerializer, ProductRawMaterialCostSerializer, BOMListSerializer, OrderListSerializer, ProductPricingSerializer, CostOfRawMaterialsSerializer, OrderStatementSerializer, OrderProductionCostSerializer, EmployeeOrderSerializer, NonProjectProductCostSerializer, ProjectBOMDetailSerializer, PrincipalItemOrderListSerializer, PrincipalOrderItemSerializer, TrackingNpopSerializer, TrackingPrincipalSerializer, ProjectProductMatsSerializer, NonProjectBOMDetailSerializer, PrincipalBOMDetailSerializer
 from django.core.exceptions import ValidationError
 from connected_modules.sales.models import Orders, StatementItem
 from django.http import JsonResponse
@@ -109,6 +109,26 @@ class ProjectBOMDetailViewset(viewsets.ReadOnlyModelViewSet):
     def get_products(self, request, statement_id=None):
         products_rm = ProjectBOMDetail.objects.filter(statement_id = statement_id)
         serializer_class = ProjectBOMDetailSerializer(products_rm,many=True)
+        return Response(serializer_class.data)
+    
+class NonProjectBOMDetailViewset(viewsets.ReadOnlyModelViewSet):
+    queryset = NonProjectBOMDetail.objects.all()
+    serializer_class = NonProjectBOMDetailSerializer
+
+    @action(detail=False, methods=['get'], url_path='by-statement/(?P<statement_id>[^/.]+)')
+    def get_products(self, request, statement_id=None):
+        products_rm = NonProjectBOMDetail.objects.filter(statement_id = statement_id)
+        serializer_class = NonProjectBOMDetailSerializer(products_rm,many=True)
+        return Response(serializer_class.data)
+    
+class PrincipalBOMDetailViewset(viewsets.ReadOnlyModelViewSet):
+    queryset = PrincipalBOMDetail.objects.all()
+    serializer_class = PrincipalBOMDetailSerializer
+
+    @action(detail=False, methods=['get'], url_path='by-serviceid/(?P<service_order_item_id>[^/.]+)')
+    def get_products(self, request, service_order_item_id=None):
+        products_rm = PrincipalBOMDetail.objects.filter(service_order_item_id = service_order_item_id)
+        serializer_class = PrincipalBOMDetailSerializer(products_rm,many=True)
         return Response(serializer_class.data)
     
 class PrincipalItemOrderListViewset(viewsets.ReadOnlyModelViewSet):
