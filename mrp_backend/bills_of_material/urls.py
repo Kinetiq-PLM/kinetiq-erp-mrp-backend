@@ -2,7 +2,7 @@ from django.urls import path, include
 
 from rest_framework.routers import DefaultRouter
 
-from .views import BillOfMaterialsViewSet, NonProjectOrderPricingViewSet, ProductMatsViewSet, LaborCostViewSet, PrincipalItemsViewset, ProductRawMaterialCostViewSet, BOMListViewSet, OrderListViewSet, ProductPricingViewSet, CostOfRawMaterialsViewSet, OrderStatementViewSet, OrderProductionCostsViewSet, EmployeeOrderViewSet, insert_bom, NonProjectProductCostViewset, ProjectBOMDetailViewset, PrincipalItemOrderListViewset, insert_nonproject, PrincipalOrderItemViewSet
+from .views import BillOfMaterialsViewSet, NonProjectOrderPricingViewSet, ProductMatsViewSet, LaborCostViewSet, PrincipalItemsViewset, ProductRawMaterialCostViewSet, BOMListViewSet, OrderListViewSet, ProductPricingViewSet, CostOfRawMaterialsViewSet, OrderStatementViewSet, OrderProductionCostsViewSet, EmployeeOrderViewSet, insert_bom, NonProjectProductCostViewset, ProjectBOMDetailViewset, PrincipalItemOrderListViewset, insert_nonproject, PrincipalOrderItemViewSet, insert_principal
 
 router = DefaultRouter()
 
@@ -27,5 +27,6 @@ router.register(r'principalitemorder', PrincipalOrderItemViewSet, basename='prin
 urlpatterns = [
     path('bills_of_material/', include(router.urls)),
     path('insertbom/', insert_bom, name="insert-bom"),
-    path('insert_nonproject/', insert_nonproject, name="insert-nonproject")
+    path('insert_nonproject/', insert_nonproject, name="insert-nonproject"),
+    path('insert_principal/', insert_principal, name="insert-principal")
 ]
