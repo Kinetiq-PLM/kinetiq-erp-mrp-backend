@@ -498,6 +498,11 @@ class PrincipalOrderItem(models.Model):
         max_digits=10,
         decimal_places=2
     )
+    total_item_price = models.DecimalField(
+        db_column='total_item_price',
+        max_digits=10,
+        decimal_places=2
+    )
     class Meta:
         managed = False
         db_table = 'principal_item_details'
