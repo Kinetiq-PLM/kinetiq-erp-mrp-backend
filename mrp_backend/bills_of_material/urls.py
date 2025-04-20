@@ -2,7 +2,7 @@ from django.urls import path, include
 
 from rest_framework.routers import DefaultRouter
 
-from .views import BillOfMaterialsViewSet, NonProjectOrderPricingViewSet, ProductMatsViewSet, LaborCostViewSet, PrincipalItemsViewset, ProductRawMaterialCostViewSet, BOMListViewSet, OrderListViewSet, ProductPricingViewSet, CostOfRawMaterialsViewSet, OrderStatementViewSet, OrderProductionCostsViewSet, EmployeeOrderViewSet, insert_bom, NonProjectProductCostViewset, ProjectBOMDetailViewset, PrincipalItemOrderListViewset, insert_nonproject, PrincipalOrderItemViewSet, insert_principal, TrackingNpopViewSet, TrackingPrincipalViewSet, ProjectProductMatsViewSet, update_tracking_status
+from .views import BillOfMaterialsViewSet, NonProjectOrderPricingViewSet, ProductMatsViewSet, LaborCostViewSet, PrincipalItemsViewset, ProductRawMaterialCostViewSet, BOMListViewSet, OrderListViewSet, ProductPricingViewSet, CostOfRawMaterialsViewSet, OrderStatementViewSet, OrderProductionCostsViewSet, EmployeeOrderViewSet, insert_bom, NonProjectProductCostViewset, ProjectBOMDetailViewset, PrincipalItemOrderListViewset, insert_nonproject, PrincipalOrderItemViewSet, insert_principal, TrackingNpopViewSet, TrackingPrincipalViewSet, ProjectProductMatsViewSet, update_tracking_status, update_tracking_status_principal
 
 router = DefaultRouter()
 
@@ -33,5 +33,5 @@ urlpatterns = [
     path('insert_nonproject/', insert_nonproject, name="insert-nonproject"),
     path('insert_principal/', insert_principal, name="insert-principal"),
     path('update_tracking_status/', update_tracking_status, name='update_tracking_status'),
-
+    path('update_tracking_status_principal/', update_tracking_status_principal, name='update_tracking_status_principal')
 ]

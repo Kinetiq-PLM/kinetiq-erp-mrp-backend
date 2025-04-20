@@ -210,3 +210,25 @@ def update_tracking_status(request):
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
     return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+@csrf_exempt
+def update_tracking_status_principal(request):
+    if request.method == 'POST':
+        try:
+            import json
+            data = json.loads(request.body)
+            service_order_item_id = data.get('service_order_item_id')
+
+            if not service_order_item_id:
+                return JsonResponse({'error': 'Service Order Id is required'}, status=400)
+
+            tracking_record = TrackingPrincipal.objects.filter(service_order_item_id=service_order_item_id).first()
+            if tracking_record:
+                tracking_record.status = 'Complete'
+                tracking_record.save()
+                return JsonResponse({'message': 'Status updated successfully'}, status=200)
+            else:
+                return JsonResponse({'error': 'Tracking record not found'}, status=404)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+    return JsonResponse({'error': 'Invalid request method'}, status=405)
