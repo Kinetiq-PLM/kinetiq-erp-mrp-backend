@@ -547,3 +547,32 @@ class TrackingPrincipal(models.Model):
     class Meta:
         managed = False
         db_table = 'tracking_principal'
+
+
+class ProjectProductMats(models.Model):
+    statement_id = models.CharField(
+        db_column='statement_id',
+        primary_key=True,
+        max_length=255
+    )
+    product_mats_id = models.CharField(
+        db_column='product_mats_id'
+    )
+    quantity_required = models.DecimalField(
+        db_column='quantity_required',
+        max_digits=10,
+        decimal_places=2
+    )
+    cost_per_raw_material = models.DecimalField(
+        db_column='cost_per_raw_material',
+        max_digits=10,
+        decimal_places=2
+    )
+    total_cost_of_raw_materials = models.DecimalField(
+        db_column='total_cost_of_raw_materials',
+        max_digits=10,
+        decimal_places=2
+    )
+    class Meta:
+        managed = False
+        db_table = 'project_productmats'

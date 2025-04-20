@@ -2,7 +2,7 @@ from django.urls import path, include
 
 from rest_framework.routers import DefaultRouter
 
-from .views import BillOfMaterialsViewSet, NonProjectOrderPricingViewSet, ProductMatsViewSet, LaborCostViewSet, PrincipalItemsViewset, ProductRawMaterialCostViewSet, BOMListViewSet, OrderListViewSet, ProductPricingViewSet, CostOfRawMaterialsViewSet, OrderStatementViewSet, OrderProductionCostsViewSet, EmployeeOrderViewSet, insert_bom, NonProjectProductCostViewset, ProjectBOMDetailViewset, PrincipalItemOrderListViewset, insert_nonproject, PrincipalOrderItemViewSet, insert_principal, TrackingNpopViewSet, TrackingPrincipalViewSet
+from .views import BillOfMaterialsViewSet, NonProjectOrderPricingViewSet, ProductMatsViewSet, LaborCostViewSet, PrincipalItemsViewset, ProductRawMaterialCostViewSet, BOMListViewSet, OrderListViewSet, ProductPricingViewSet, CostOfRawMaterialsViewSet, OrderStatementViewSet, OrderProductionCostsViewSet, EmployeeOrderViewSet, insert_bom, NonProjectProductCostViewset, ProjectBOMDetailViewset, PrincipalItemOrderListViewset, insert_nonproject, PrincipalOrderItemViewSet, insert_principal, TrackingNpopViewSet, TrackingPrincipalViewSet, ProjectProductMatsViewSet
 
 router = DefaultRouter()
 
@@ -25,6 +25,7 @@ router.register(r'principalorders', PrincipalItemOrderListViewset, basename='pri
 router.register(r'principalitemorder', PrincipalOrderItemViewSet, basename='principal-items')
 router.register(r'trackingnpop', TrackingNpopViewSet)
 router.register(r'trackingprincipal', TrackingPrincipalViewSet)
+router.register(r'projectproductmats', ProjectProductMatsViewSet, basename='project-productmats')
 
 urlpatterns = [
     path('bills_of_material/', include(router.urls)),

@@ -2,8 +2,8 @@ from django.shortcuts import render
 from rest_framework import viewsets, status
 from rest_framework.decorators import action, api_view
 from rest_framework.response import Response
-from .models import BillOfMaterials, NonProjectOrderPricing, ProductMats, LaborCost, PrincipalItems, ProductRawMaterialCost, BOMList, OrderList, ProductPricing, CostOfRawMaterials, OrderProductionCosts, EmployeeOrder, NonProjectProductCost, ProjectBOMDetail, PrincipalItemOrderList, PrincipalOrderItem, TrackingNpop, TrackingPrincipal
-from .serializers import BillOfMaterialsSerializer, NonProjectOrderPricingSerializer, ProductMatsSerializer, LaborCostSerializer, PrincipalItemsSerializer, ProductRawMaterialCostSerializer, BOMListSerializer, OrderListSerializer, ProductPricingSerializer, CostOfRawMaterialsSerializer, OrderStatementSerializer, OrderProductionCostSerializer, EmployeeOrderSerializer, NonProjectProductCostSerializer, ProjectBOMDetailSerializer, PrincipalItemOrderListSerializer, PrincipalOrderItemSerializer, TrackingNpopSerializer, TrackingPrincipalSerializer
+from .models import BillOfMaterials, NonProjectOrderPricing, ProductMats, LaborCost, PrincipalItems, ProductRawMaterialCost, BOMList, OrderList, ProductPricing, CostOfRawMaterials, OrderProductionCosts, EmployeeOrder, NonProjectProductCost, ProjectBOMDetail, PrincipalItemOrderList, PrincipalOrderItem, TrackingNpop, TrackingPrincipal, ProjectProductMats
+from .serializers import BillOfMaterialsSerializer, NonProjectOrderPricingSerializer, ProductMatsSerializer, LaborCostSerializer, PrincipalItemsSerializer, ProductRawMaterialCostSerializer, BOMListSerializer, OrderListSerializer, ProductPricingSerializer, CostOfRawMaterialsSerializer, OrderStatementSerializer, OrderProductionCostSerializer, EmployeeOrderSerializer, NonProjectProductCostSerializer, ProjectBOMDetailSerializer, PrincipalItemOrderListSerializer, PrincipalOrderItemSerializer, TrackingNpopSerializer, TrackingPrincipalSerializer, ProjectProductMatsSerializer
 from django.core.exceptions import ValidationError
 from connected_modules.sales.models import Orders, StatementItem
 
@@ -131,20 +131,31 @@ class TrackingPrincipalViewSet(viewsets.ModelViewSet):
     queryset = TrackingPrincipal.objects.all()
     serializer_class = TrackingPrincipalSerializer
 
+class ProjectProductMatsViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = ProjectProductMats.objects.all()
+    serializer_class = ProjectProductMatsSerializer
+
+    @action(detail=False, methods=['get'], url_path='by-statement/(?P<statement_id>[^/.]+)')
+    def get_productmats(self, request, statement_id=None):
+        productmats = ProjectProductMats.objects.filter(statement_id = statement_id)
+        serializer_class = ProjectProductMatsSerializer(productmats,many=True)
+        return Response(serializer_class.data)
+
 @api_view(['POST'])
 def insert_bom(request):
     try:
+        responses = []
         for entry in request.data:
-            if request.method == 'POST':
-                serializer = BillOfMaterialsSerializer(data=entry)
-                if serializer.is_valid():
-                    serializer.save()
-                    return Response(serializer.data, status=status.HTTP_201_CREATED)
-                else:
-                    print(serializer.errors)
-                    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            serializer = BillOfMaterialsSerializer(data=entry)
+            if serializer.is_valid():
+                serializer.save()
+                responses.append({"data": serializer.data, "status": status.HTTP_201_CREATED})
+            else:
+                responses.append({"errors": serializer.errors, "status": status.HTTP_400_BAD_REQUEST})
+        
+        return Response(responses, status=status.HTTP_207_MULTI_STATUS)
     except Exception as e:
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 @api_view(['POST'])
 def insert_nonproject(request):
