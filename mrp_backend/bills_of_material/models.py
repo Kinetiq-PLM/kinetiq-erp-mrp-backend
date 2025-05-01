@@ -395,13 +395,13 @@ class NonProjectProductCost(models.Model):
         max_length=255
     )
     product_id = models.CharField(
-        db_column='product_id'
+        db_column='item_id'
     )
     product_name = models.TextField(
-        db_column='product_name'
+        db_column='item_name'
     )
     description = models.TextField(
-        db_column='description'
+        db_column='item_description'
     )
     quantity = models.IntegerField(
         db_column='quantity'
@@ -460,10 +460,10 @@ class NonProjectBOMDetail(models.Model):
         max_length=255
     )
     product_id = models.CharField(
-        db_column='product_id'
+        db_column='item_id'
     )
     product_name = models.TextField(
-        db_column='product_name'
+        db_column='item_name'
     )
     quantity = models.IntegerField(
         db_column='quantity'
@@ -472,7 +472,7 @@ class NonProjectBOMDetail(models.Model):
         db_column='unit_of_measure'
     )
     selling_price = models.DecimalField(
-        db_column='selling_price',
+        db_column='item_price',
         max_digits=10,
         decimal_places=2
     )
@@ -491,12 +491,6 @@ class PrincipalBOMDetail(models.Model):
         db_column='service_order_item_id',
         primary_key=True,
         max_length=255
-    )
-    item_id = models.CharField(
-        db_column='item_id'
-    )
-    material_id = models.CharField(
-        db_column='material_id'
     )
     item_name = models.TextField(
         db_column='item_name'
@@ -548,9 +542,6 @@ class PrincipalOrderItem(models.Model):
     )
     item_id = models.CharField(
         db_column='item_id'
-    )
-    material_id = models.CharField(
-        db_column='material_id'
     )
     item_name = models.TextField(
         db_column='item_name'
