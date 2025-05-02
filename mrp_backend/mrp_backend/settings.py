@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     "bills_of_material",
     "connected_modules",
+    "product_materials",
     "rest_framework",
     "corsheaders",    
     "django_cognito_jwt"

@@ -24,5 +24,6 @@ admin_router.registry.extend(router.registry)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("", include("bills_of_material.urls"))
+    path("", include("bills_of_material.urls")),
+    path("", include("product_materials.urls"))
 ]
