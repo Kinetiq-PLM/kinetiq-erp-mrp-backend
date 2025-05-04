@@ -163,19 +163,11 @@ class PrincipalItems(models.Model):
         primary_key=True,
         max_length=255
     )
-    service_order_item_id = models.ForeignKey(
-        ServiceOrderItem,
+    service_order_item_id = models.CharField(
         db_column='service_order_item_id',
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True
     )
-    item_id = models.ForeignKey(
-        ItemMasterData,
+    item_id = models.CharField(
         db_column='item_id',
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True
     )
     mark_up_price = models.DecimalField(
         db_column='mark_up_price',
@@ -516,8 +508,8 @@ class PrincipalBOMDetail(models.Model):
         db_table = 'principal_bom_detail'
 
 class PrincipalItemOrderList(models.Model):
-    service_order_item_id = models.CharField(
-        db_column='service_order_item_id',
+    service_order_id = models.CharField(
+        db_column='service_order_id',
         primary_key=True,
         max_length=255
     )
@@ -535,10 +527,13 @@ class PrincipalItemOrderList(models.Model):
         db_table = 'principal_item_orders'
 
 class PrincipalOrderItem(models.Model):
-    service_order_item_id = models.CharField(
-        db_column='service_order_item_id',
+    service_order_id = models.CharField(
+        db_column='service_order_id',
         primary_key=True,
         max_length=255
+    )
+    service_order_item_id = models.CharField(
+        db_column='service_order_item_id'
     )
     item_id = models.CharField(
         db_column='item_id'

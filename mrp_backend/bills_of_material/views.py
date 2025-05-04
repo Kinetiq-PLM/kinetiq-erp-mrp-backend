@@ -139,9 +139,9 @@ class PrincipalOrderItemViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = PrincipalOrderItem.objects.all()
     serializer_class = PrincipalOrderItemSerializer
 
-    @action(detail=False, methods=['get'], url_path='by-serviceid/(?P<service_order_item_id>[^/.]+)')
-    def get_products(self, request, service_order_item_id=None):
-        principal_product = PrincipalOrderItem.objects.filter(service_order_item_id = service_order_item_id)
+    @action(detail=False, methods=['get'], url_path='by-serviceid/(?P<service_order_id>[^/.]+)')
+    def get_products(self, request, service_order_id=None):
+        principal_product = PrincipalOrderItem.objects.filter(service_order_id = service_order_id)
         serializer_class = PrincipalOrderItemSerializer(principal_product,many=True)
         return Response(serializer_class.data)
     
@@ -197,16 +197,18 @@ def insert_nonproject(request):
 @api_view(['POST'])
 def insert_principal(request):
     try:
-        if request.method == 'POST':
-            serializer = PrincipalItemsSerializer(data=request.data)
+        responses = []
+        for entry in request.data:
+            serializer = PrincipalItemsSerializer(data=entry)
             if serializer.is_valid():
                 serializer.save()
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
+                responses.append({"data": serializer.data, "status": status.HTTP_201_CREATED})
             else:
-                print(serializer.errors)
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                responses.append({"errors": serializer.errors, "status": status.HTTP_400_BAD_REQUEST})
+        
+        return Response(responses, status=status.HTTP_207_MULTI_STATUS)
     except Exception as e:
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 
 @csrf_exempt
