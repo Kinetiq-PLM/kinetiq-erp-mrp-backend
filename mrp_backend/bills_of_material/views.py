@@ -125,9 +125,9 @@ class PrincipalBOMDetailViewset(viewsets.ReadOnlyModelViewSet):
     queryset = PrincipalBOMDetail.objects.all()
     serializer_class = PrincipalBOMDetailSerializer
 
-    @action(detail=False, methods=['get'], url_path='by-serviceid/(?P<service_order_item_id>[^/.]+)')
-    def get_products(self, request, service_order_item_id=None):
-        products_rm = PrincipalBOMDetail.objects.filter(service_order_item_id = service_order_item_id)
+    @action(detail=False, methods=['get'], url_path='by-serviceid/(?P<service_order_id>[^/.]+)')
+    def get_products(self, request, service_order_id=None):
+        products_rm = PrincipalBOMDetail.objects.filter(service_order_id = service_order_id)
         serializer_class = PrincipalBOMDetailSerializer(products_rm,many=True)
         return Response(serializer_class.data)
     
@@ -239,12 +239,12 @@ def update_tracking_status_principal(request):
         try:
             import json
             data = json.loads(request.body)
-            service_order_item_id = data.get('service_order_item_id')
+            service_order_id = data.get('service_order_id')
 
-            if not service_order_item_id:
+            if not service_order_id:
                 return JsonResponse({'error': 'Service Order Id is required'}, status=400)
 
-            tracking_record = TrackingPrincipal.objects.filter(service_order_item_id=service_order_item_id).first()
+            tracking_record = TrackingPrincipal.objects.filter(service_order_id=service_order_id).first()
             if tracking_record:
                 tracking_record.status = 'Complete'
                 tracking_record.save()

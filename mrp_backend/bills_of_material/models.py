@@ -258,9 +258,12 @@ class OrderList(models.Model):
 
 class ProductPricing(models.Model):
     statement_id = models.CharField(
-        db_column='Statement ID',
+        db_column='statement_id',
         primary_key=True,
         max_length=255
+    )
+    statement_item_id = models.CharField(
+        db_column='statement_item_id'
     )
     product_id = models.CharField(
         db_column='Product ID'
@@ -275,7 +278,7 @@ class ProductPricing(models.Model):
         db_column='Quantity'
     )
     cost = models.DecimalField(
-        db_column='Cost',
+        db_column='Total Product Cost',
         max_digits=10,
         decimal_places=2
     )
@@ -286,7 +289,7 @@ class ProductPricing(models.Model):
 
 class CostOfRawMaterials(models.Model):
     product_id = models.CharField(
-        db_column='Product ID',
+        db_column='product_id',
         primary_key=True,
         max_length=255
     )
@@ -414,6 +417,9 @@ class ProjectBOMDetail(models.Model):
         primary_key=True,
         max_length=255
     )
+    statement_item_id = models.CharField(
+        db_column='statement_item_id'
+    )
     product_name = models.TextField(
         db_column='Product'
     )
@@ -479,10 +485,13 @@ class NonProjectBOMDetail(models.Model):
 
 
 class PrincipalBOMDetail(models.Model):
-    service_order_item_id = models.CharField(
-        db_column='service_order_item_id',
+    service_order_id = models.CharField(
+        db_column='service_order_id',
         primary_key=True,
         max_length=255
+    )
+    service_order_item_id = models.CharField(
+        db_column='service_order_item_id',
     )
     item_name = models.TextField(
         db_column='item_name'
@@ -588,15 +597,11 @@ class TrackingPrincipal(models.Model):
         primary_key=True,
         max_length=255
     )
-    service_order_item_id = models.ForeignKey(
-        ServiceOrderItem,
-        db_column='service_order_item_id',
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True
-    )
     status = models.CharField(
         db_column='status'
+    )
+    service_order_id = models.CharField(
+        db_column='service_order_id'
     )
     class Meta:
         managed = False
