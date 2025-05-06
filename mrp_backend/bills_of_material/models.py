@@ -2,7 +2,7 @@ from django.db import models
 import datetime
 from connected_modules.admin.models import Products,RawMaterials,ItemMasterData
 from connected_modules.production.models import ProductionOrdersDetails, Labor, ProductionOrdersHeader
-from connected_modules.sales.models import Orders, ProductPricing
+from connected_modules.sales.models import Orders, ProductPricing, StatementItem
 from connected_modules.project_management.models import ExternalProjectDetails
 from connected_modules.human_resources.models import EmployeeSalary
 from connected_modules.services.models import ServiceOrderItem
@@ -138,18 +138,13 @@ class NonProjectOrderPricing(models.Model):
         primary_key=True,
         max_length=255
     )
-    order_id = models.ForeignKey(
-        Orders,
-        db_column='order_id',
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True
-    )
     final_price = models.DecimalField(
         db_column='final_price',
         max_digits=10,
-        decimal_places=2,
-        null=False,
+        decimal_places=2
+    )
+    statement_item_id = models.CharField(
+        db_column='statement_item_id'
     )
 
     class Meta:
@@ -389,6 +384,9 @@ class NonProjectProductCost(models.Model):
         primary_key=True,
         max_length=255
     )
+    statement_item_id = models.CharField(
+        db_column='statement_item_id'
+    )
     product_id = models.CharField(
         db_column='item_id'
     )
@@ -400,6 +398,11 @@ class NonProjectProductCost(models.Model):
     )
     quantity = models.IntegerField(
         db_column='quantity'
+    )
+    item_price = models.DecimalField(
+        db_column='item_price',
+        max_digits=10,
+        decimal_places=2
     )
     product_cost = models.DecimalField(
         db_column='Product Cost',

@@ -182,16 +182,18 @@ def insert_bom(request):
 @api_view(['POST'])
 def insert_nonproject(request):
     try:
-        if request.method == 'POST':
-            serializer = NonProjectOrderPricingSerializer(data=request.data)
+        responses = []
+        for entry in request.data:
+            serializer = NonProjectOrderPricingSerializer(data=entry)
             if serializer.is_valid():
                 serializer.save()
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
+                responses.append({"data": serializer.data, "status": status.HTTP_201_CREATED})
             else:
-                print(serializer.errors)
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                responses.append({"errors": serializer.errors, "status": status.HTTP_400_BAD_REQUEST})
+        
+        return Response(responses, status=status.HTTP_207_MULTI_STATUS)
     except Exception as e:
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 
 @api_view(['POST'])

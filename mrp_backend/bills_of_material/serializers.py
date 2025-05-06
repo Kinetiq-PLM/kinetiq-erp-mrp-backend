@@ -21,8 +21,8 @@ class NonProjectOrderPricingSerializer(serializers.ModelSerializer):
     class Meta:
         model = NonProjectOrderPricing
         fields = [
-            "order_id",
-            "final_price"
+            "final_price",
+            "statement_item_id"
         ]
 
 class ProductMatsSerializer(serializers.ModelSerializer):
