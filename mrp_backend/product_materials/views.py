@@ -2,8 +2,8 @@ from django.shortcuts import render
 from rest_framework import viewsets, status
 from rest_framework.decorators import action, api_view
 from rest_framework.response import Response
-from .models import ProductMaterial, ProductRawMaterial
-from .serializers import ProductMaterialSerializer, ProductRawMaterialSerializer
+from .models import ProductMaterial, ProductRawMaterial, SelectProduct, SelectMaterial
+from .serializers import ProductMaterialSerializer, ProductRawMaterialSerializer, SelectProductSerializer, SelectMaterialSerializer
 
 class ProductMaterialViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = ProductMaterial.objects.all()
@@ -18,3 +18,11 @@ class ProductRawMateialViewSet(viewsets.ReadOnlyModelViewSet):
         rawmats = ProductRawMaterial.objects.filter(product_id = product_id)
         serializer_class = ProductRawMaterialSerializer(rawmats,many=True)
         return Response(serializer_class.data)
+    
+class SelectProductViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = SelectProduct.objects.all()
+    serializer_class = SelectProductSerializer
+
+class SelectMaterialViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = SelectMaterial.objects.all()
+    serializer_class = SelectMaterialSerializer
