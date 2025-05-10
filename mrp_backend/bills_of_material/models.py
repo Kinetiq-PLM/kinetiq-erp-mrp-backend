@@ -106,19 +106,11 @@ class BillOfMaterials(models.Model):
         decimal_places=2,
         null=False
     )
-    production_order_detail_id = models.ForeignKey(
-        ProductionOrdersDetails,
+    production_order_detail_id = models.CharField(
         db_column='production_order_detail_id',
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True
     )
-    labor_cost_id = models.ForeignKey(
-        LaborCost,
+    labor_cost_id = models.CharField(
         db_column='labor_cost_id',
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True
     )
     total_cost = models.DecimalField(
         db_column='total_cost',
@@ -334,6 +326,9 @@ class OrderProductionCosts(models.Model):
     production_order_id = models.CharField(
         db_column='production_order_id'
     )
+    production_order_detail_id = models.CharField(
+        db_column='production_order_detail_id'
+    )
     cost_of_production = models.DecimalField(
         db_column='cost_of_production',
         max_digits=10,
@@ -364,6 +359,9 @@ class EmployeeOrder(models.Model):
     )
     employee_id = models.CharField(
         db_column='employee_id'
+    )
+    labor_cost_id = models.CharField(
+        db_column='labor_cost_id'
     )
     days_worked = models.IntegerField(
         db_column='days_worked'
