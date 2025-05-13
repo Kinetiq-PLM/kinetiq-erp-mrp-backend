@@ -29,11 +29,10 @@ class ProductMatsSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductMats
         fields = [
-            "product_mats_id",
-            "product_id",
-            "material_id",
             "quantity_required",
-            "cost_of_used_materials"
+            "cost_of_used_materials",
+            "product_id",
+            "material_id"
         ]
 
 class LaborCostSerializer(serializers.ModelSerializer):

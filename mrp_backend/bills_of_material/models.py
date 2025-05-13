@@ -14,20 +14,6 @@ class ProductMats(models.Model):
         primary_key=True,
         max_length=255
     )
-    product_id = models.ForeignKey(
-        Products,
-        db_column='product_id',
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True
-    )
-    material_id = models.ForeignKey(
-        RawMaterials,
-        db_column='material_id',
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True
-    )
     quantity_required = models.DecimalField(
         db_column='quantity_required',
         max_digits=10,
@@ -40,7 +26,13 @@ class ProductMats(models.Model):
         decimal_places=2,
         null=False
     )
-
+    product_id = models.CharField(
+        db_column='product_id',
+    )
+    material_id = models.CharField(
+        db_column='material_id'
+    )
+    
     class Meta:
         managed = False
         db_table = 'product_mats'
@@ -91,7 +83,7 @@ class BillOfMaterials(models.Model):
         null=True
     )
     overall_quantity_of_material = models.IntegerField(
-        db_column='overall_quantity_of_material',
+        db_column='quantity_required',
         null=True
     )
     cost_per_raw_material = models.DecimalField(

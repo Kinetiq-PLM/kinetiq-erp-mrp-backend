@@ -4,6 +4,7 @@ from rest_framework.decorators import action, api_view
 from rest_framework.response import Response
 from .models import ProductMaterial, ProductRawMaterial, SelectProduct, SelectMaterial
 from .serializers import ProductMaterialSerializer, ProductRawMaterialSerializer, SelectProductSerializer, SelectMaterialSerializer
+from bills_of_material.serializers import ProductMatsSerializer
 
 class ProductMaterialViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = ProductMaterial.objects.all()
@@ -26,3 +27,20 @@ class SelectProductViewSet(viewsets.ReadOnlyModelViewSet):
 class SelectMaterialViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = SelectMaterial.objects.all()
     serializer_class = SelectMaterialSerializer
+
+
+@api_view(['POST'])
+def insert_productmats(request):
+    try:
+        responses = []
+        for entry in request.data:
+            serializer = ProductMatsSerializer(data=entry)
+            if serializer.is_valid():
+                serializer.save()
+                responses.append({"data": serializer.data, "status": status.HTTP_201_CREATED})
+            else:
+                responses.append({"errors": serializer.errors, "status": status.HTTP_400_BAD_REQUEST})
+        
+        return Response(responses, status=status.HTTP_207_MULTI_STATUS)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
